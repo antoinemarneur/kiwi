@@ -12,6 +12,7 @@ tokio = { version = "1.22.0", features = ["full"] }
 tower = "0.4.13"
 chrono = { version = "0.4.23", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
+sqlx = { version = "0.6", features = ["runtime-tokio-rustls", "sqlite"] }
 
 [dependencies.uuid]
 version = "1.2.2"
