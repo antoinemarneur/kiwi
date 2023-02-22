@@ -1,29 +1,26 @@
-use axum::{
-    routing::{get, post, delete},
-    Router,
-};
-use kiwi::{
-    messages,
-    likes
-};
-use sqlx::sqlite::SqlitePool;
+use anyhow::Context;
+use clap::Parser;
+use sqlx::sqlite::SqlitePoolOptions;
+use kiwi::config::Config;
+use kiwi::router;
 
 #[tokio::main]
-async fn main() -> Result<(), sqlx::Error>{
-    let pool = SqlitePool::connect("sqlite:db").await?;
+async fn main() -> anyhow::Result<()> {
 
-    // build our application with a single route
-    let app = Router::new()
-                .route("/messages", get(messages::list_messages).post(messages::create_message))
-                .route("/message/:id", get(messages::list_message).delete(messages::delete_message))
-                .route("/message/:id/like", get(likes::list_likes).post(likes::create_like))
-                .with_state(pool);
+    // Parse environment.
+    // This will exit with a help message if something is wrong.
+    let config = Config::parse();
 
-    // run it with hyper on localhost:3000
-    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
-        .serve(app.into_make_service())
+    // Single connection pool for SQLx that will be shared across the whole application.
+    // This helps to avoid opening a new connection for every API call. 
+    let db = SqlitePoolOptions::new()
+        .max_connections(50)
+        .connect(&config.database_url)
         .await
-        .unwrap();
+        .context("could not connect to database_url")?;
+
+    // Serve our application!
+    router::server::serve(config, db).await?;
 
     Ok(())
 }
