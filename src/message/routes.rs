@@ -1,0 +1,17 @@
+use crate::message::messages;
+use axum::{
+    routing::{get},
+    Router,
+};
+
+pub fn router() -> Router {
+    Router::new()
+                .route(
+                    "/messages",
+                    get(messages::list_messages).post(messages::create_message),
+                )
+                .route(
+                    "/message/:id",
+                    get(messages::list_message).delete(messages::delete_message),
+                )
+}
