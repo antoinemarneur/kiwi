@@ -3,6 +3,7 @@ pub mod router;
 pub mod message;
 pub mod like;
 pub mod error;
+pub mod user;
 
 pub use error::{Error, ResultExt};
 
