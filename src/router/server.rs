@@ -5,6 +5,7 @@ use sqlx::sqlite::SqlitePool;
 use crate::config::Config;
 use crate::message;
 use crate::like;
+use crate::user;
 use std::sync::Arc;
 use tower_http::trace::TraceLayer;
 
@@ -38,4 +39,5 @@ pub async fn serve(config: Config, db: SqlitePool) -> anyhow::Result<()> {
 fn router() -> Router {
     message::routes::router()
         .merge(like::routes::router())
+        .merge(user::routes::router())
 }
