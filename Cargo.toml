@@ -6,20 +6,36 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# Core dependencies
 axum = "0.6.1"
 hyper = { version = "0.14.23", features = ["full"] }
 tokio = { version = "1.22.0", features = ["full"] }
-tower = "0.4.13"
-chrono = { version = "0.4.23", features = ["serde"] }
-serde = { version = "1.0", features = ["derive"] }
-sqlx = { version = "0.6", features = ["runtime-tokio-rustls", "sqlite", "uuid", "time"] }
-anyhow = "1.0.69"
-tower-http = { version = "0.2.0", features = ["trace"] }
+sqlx = { version = "0.6.2", features = ["runtime-tokio-rustls", "sqlite", "uuid", "time", "macros"] }
+
+# Useful dependencies
 clap = { version = "4.1.4", features = ["derive", "env"] }
+serde = { version = "1.0", features = ["derive"] }
+
+# Password hashing
+argon2 = "0.5.0"
+
+# Axum ++
+axum-macros = "0.3.6"
+tower = "0.4.13"
+tower-http = { version = "0.2.0", features = ["trace"] }
+
+jwt = "0.16.0"
+hmac = "0.12.1"
+sha2 = "0.10.6"
+
+time = { version = "0.3.20", features = ["serde", "serde-human-readable"] }
+
+# Utility crates
+anyhow = "1.0.69"
 thiserror = "1.0.30"
 log = "0.4.14"
-http-body = "0.4.5"
-time = { version = "0.3.20", features = ["serde", "serde-human-readable"] }
+rand = "0.8.5"
+dotenv = "0.15.0"
 
 [dependencies.uuid]
 version = "1.2.2"
